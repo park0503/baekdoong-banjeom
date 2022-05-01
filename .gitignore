@@ -1,0 +1,13 @@
+bdbj-spring/HELP.md
+bdbj-spring/target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+bdbj-spring/.idea
+bdbj-spring/*.iws
+bdbj-spring/*.iml
+bdbj-spring/*.ipr
+
+*/application-secret.yml
