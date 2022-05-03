@@ -1,5 +1,7 @@
 package com.example.bdbj.domain;
 
+import com.example.bdbj.domain.error.ErrorCode;
+import com.example.bdbj.exception.InvalidInputException;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ public class Menu {
 
     @Builder
     public Menu(@NonNull UUID menuId, @NonNull Integer price, @NonNull String menuName, @NonNull Category category, String imagePath, String description) {
+        checkPrice(price);
         this.menuId = menuId;
         this.price = price;
         this.menuName = menuName;
@@ -41,6 +44,7 @@ public class Menu {
     }
 
     public void setPrice(@NonNull Integer price) {
+        checkPrice(price);
         this.price = price;
         updatedUpdatedAt();
     }
@@ -70,5 +74,13 @@ public class Menu {
     @Override
     public int hashCode() {
         return Objects.hash(menuId, menuName, category, price, imagePath, description, createdAt, updatedAt);
+    }
+
+    private void checkPrice(Integer price) {
+        if (price <= 0) {
+            throw new InvalidInputException("메뉴의 가격은 0보다 커야 합니다.", ErrorCode.INVALID_PRICE);
+        } else if (price > 100000000) {
+            throw new InvalidInputException("메뉴의 가격은 100,000,000보다 작아야 합니다.", ErrorCode.INVALID_PRICE);
+        }
     }
 }

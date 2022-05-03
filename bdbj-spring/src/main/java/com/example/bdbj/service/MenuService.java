@@ -21,6 +21,10 @@ public class MenuService {
         this.menuRepository = menuRepository;
     }
 
+    public List<Menu> getAllMenus() {
+        return menuRepository.findAll();
+    }
+
     public Menu getMenuById(UUID menuId) {
         return menuRepository.findById(menuId).orElseThrow(
                 () -> new RecordNotFoundException(
@@ -78,7 +82,7 @@ public class MenuService {
         if (!menu.getPrice().equals(price)) {
             menu.setPrice(price);
         }
-        if(!Objects.equals(menu.getImagePath(), imagePath)) {
+        if (!Objects.equals(menu.getImagePath(), imagePath)) {
             menu.setImagePath(imagePath);
         }
         if (!Objects.equals(menu.getDescription(), description)) {
