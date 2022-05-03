@@ -30,17 +30,17 @@ public class Menu {
         this.createdAt = LocalDateTime.now().withNano(0);
     }
 
-    public void setMenuName(String menuName) {
+    public void setMenuName(@NonNull String menuName) {
         this.menuName = menuName;
         updatedUpdatedAt();
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(@NonNull Category category) {
         this.category = category;
         updatedUpdatedAt();
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(@NonNull Integer price) {
         this.price = price;
         updatedUpdatedAt();
     }
