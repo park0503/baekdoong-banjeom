@@ -1,5 +1,6 @@
 package com.example.bdbj.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
+@AllArgsConstructor
 public class Order {
     private final UUID orderId;
     private final String phoneNumber;

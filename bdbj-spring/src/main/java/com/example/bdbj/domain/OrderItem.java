@@ -1,5 +1,6 @@
 package com.example.bdbj.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
+@AllArgsConstructor
 public class OrderItem {
     private final UUID orderId;
     private final UUID menuId;
