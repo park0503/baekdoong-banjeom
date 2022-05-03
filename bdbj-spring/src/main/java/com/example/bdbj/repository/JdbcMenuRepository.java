@@ -25,22 +25,24 @@ public class JdbcMenuRepository implements MenuRepository{
 
     private static final RowMapper<Menu> menuRowMapper = (resultSet, i) -> {
         UUID menuId = toUUID(resultSet.getBytes("menu_id"));
-        String name = resultSet.getString("name");
+        String menuName = resultSet.getString("menu_name");
         Category category = Category.valueOf(resultSet.getString("category"));
         Integer price = resultSet.getInt("price");
         String imagePath = resultSet.getString("image_path");
+        String description = resultSet.getString("description");
         LocalDateTime createdAt = toLocalDateTime(resultSet.getTimestamp("created_at"));
         LocalDateTime updatedAt = toLocalDateTime(resultSet.getTimestamp("updated_at"));
-        return new Menu(menuId, name, category, price, imagePath, createdAt, updatedAt);
+        return new Menu(menuId, menuName, category, price, imagePath, description, createdAt, updatedAt);
     };
 
     private Map<String, Object> toParamMap(Menu menu) {
         Map paramMap = new HashMap<String, Object>();
         paramMap.put("menuId", menu.getMenuId().toString().getBytes());
-        paramMap.put("name", menu.getMenuName());
+        paramMap.put("menuName", menu.getMenuName());
         paramMap.put("category", menu.getCategory().toString());
         paramMap.put("price", menu.getPrice());
         paramMap.put("imagePath", menu.getImagePath());
+        paramMap.put("description", menu.getDescription());
         paramMap.put("createdAt", toTimestamp(menu.getCreatedAt()));
         paramMap.put("updatedAt", toTimestamp(menu.getUpdatedAt()));
         return paramMap;
@@ -51,19 +53,21 @@ public class JdbcMenuRepository implements MenuRepository{
         int updated = jdbcTemplate.update(
                 "insert into menu(" +
                         "menu_id," +
-                        " name," +
+                        " menu_name," +
                         " category," +
                         " price," +
                         " image_path," +
+                        " description," +
                         " created_at," +
                         " updated_at" +
                         ") " +
                 "values(" +
                         "UNHEX(REPLACE(:menuId, '-', ''))" +
-                        ", :name" +
+                        ", :menuName" +
                         ", :category" +
                         ", :price" +
                         ", :imagePath" +
+                        ", :description" +
                         ", :createdAt" +
                         ", :updatedAt)"
                 , toParamMap(menu));
@@ -87,7 +91,7 @@ public class JdbcMenuRepository implements MenuRepository{
             return Optional.ofNullable(
                     jdbcTemplate.queryForObject(
                             "select * from menu where menu_id = UNHEX(REPLACE(:menuId, '-', ''))"
-                            , Collections.singletonMap("menuId", menuId)
+                            , Collections.singletonMap("menuId", menuId.toString().getBytes())
                             , menuRowMapper)
             );
         } catch (DataAccessException ex) {
@@ -99,13 +103,21 @@ public class JdbcMenuRepository implements MenuRepository{
     public Optional<Menu> findByName(String menuName) {
         try {
             return Optional.ofNullable(
-                    jdbcTemplate.queryForObject("select * from menu where menu_name = :menuName"
+                    jdbcTemplate.queryForObject(
+                            "select * from menu where menu_name = :menuName"
                             , Collections.singletonMap("menuName", menuName)
                             , menuRowMapper)
             );
         } catch (DataAccessException ex) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<Menu> findByLikeName(String menuName) {
+        return jdbcTemplate.query("select * from menu where menu_name like :menuName"
+                , Collections.singletonMap("menuName", "%" + menuName + "%")
+                , menuRowMapper);
     }
 
     @Override
@@ -125,6 +137,7 @@ public class JdbcMenuRepository implements MenuRepository{
                         ", category = :category" +
                         ", price = :price" +
                         ", image_path = :imagePath" +
+                        ", description = :description" +
                         ", updated_at = :updatedAt" +
                         " where menu_id = UNHEX(REPLACE(:menuId, '-', ''))"
                 , toParamMap(menu));
@@ -146,7 +159,7 @@ public class JdbcMenuRepository implements MenuRepository{
     public void deleteById(UUID menuId) {
         jdbcTemplate.update(
                 "delete from menu where menu_id = UNHEX(REPLACE(:menuId, '-', ''))"
-                , Collections.emptyMap()
+                , Collections.singletonMap("menuId", menuId.toString().getBytes())
         );
     }
 }

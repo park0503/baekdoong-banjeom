@@ -14,7 +14,9 @@ public interface MenuRepository {
 
     Optional<Menu> findById(UUID menuId);
 
-    Optional<Menu> findByName(String name);
+    Optional<Menu> findByName(String menuName);
+
+    List<Menu> findByLikeName(String menuName);
 
     List<Menu> findByCategory(Category category);
 
