@@ -4,6 +4,7 @@ import com.example.bdbj.domain.Category;
 import com.example.bdbj.domain.Menu;
 import com.example.bdbj.domain.error.ErrorCode;
 import com.example.bdbj.exception.RecordNotUpdatedException;
+import com.example.bdbj.util.GlobalUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -26,7 +27,7 @@ public class JdbcMenuRepository implements MenuRepository{
     private static final RowMapper<Menu> menuRowMapper = (resultSet, i) -> {
         UUID menuId = toUUID(resultSet.getBytes("menu_id"));
         String menuName = resultSet.getString("menu_name");
-        Category category = Category.valueOf(resultSet.getString("category"));
+        Category category = GlobalUtils.convertStringToCategory(resultSet.getString("category"));
         Integer price = resultSet.getInt("price");
         String imagePath = resultSet.getString("image_path");
         String description = resultSet.getString("description");
@@ -73,7 +74,7 @@ public class JdbcMenuRepository implements MenuRepository{
                 , toParamMap(menu));
         if (updated != 1) {
             throw new RecordNotUpdatedException(
-                    "Record cant be inserted!"
+                    "Menu record cant be inserted!"
                     , ErrorCode.MENU_NOT_UPDATED
             );
         }
@@ -143,7 +144,7 @@ public class JdbcMenuRepository implements MenuRepository{
                 , toParamMap(menu));
         if (updated != 1) {
             throw new RecordNotUpdatedException(
-                    "Record cant be updated!"
+                    "Menu record cant be updated!"
                     , ErrorCode.MENU_NOT_UPDATED
             );
         }

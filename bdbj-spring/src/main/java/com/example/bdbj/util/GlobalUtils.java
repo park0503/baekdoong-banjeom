@@ -1,6 +1,7 @@
 package com.example.bdbj.util;
 
 import com.example.bdbj.domain.Category;
+import com.example.bdbj.domain.OrderStatus;
 import com.example.bdbj.domain.error.ErrorCode;
 import com.example.bdbj.exception.FieldBlankException;
 import com.example.bdbj.exception.InvalidInputException;
@@ -29,6 +30,14 @@ public class GlobalUtils {
             return Category.valueOf(input);
         } catch (IllegalArgumentException ex) {
             throw new InvalidInputException("Invalid category.", ErrorCode.INVALID_CATEGORY);
+        }
+    }
+
+    public static OrderStatus convertStringToOrderStatus(String input) {
+        try {
+            return OrderStatus.valueOf(input);
+        } catch (IllegalArgumentException ex) {
+            throw new InvalidInputException("Invalid category.", ErrorCode.INVALID_ORDER_STATUS);
         }
     }
 }

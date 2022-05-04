@@ -2,8 +2,7 @@ package com.example.bdbj.controller;
 
 import com.example.bdbj.domain.Category;
 import com.example.bdbj.domain.Menu;
-import com.example.bdbj.dto.CreateMenuReqDto;
-import com.example.bdbj.dto.UpdateMenuReqDto;
+import com.example.bdbj.dto.MenuReqDto;
 import com.example.bdbj.service.MenuService;
 import com.example.bdbj.util.GlobalUtils;
 import org.springframework.stereotype.Controller;
@@ -11,10 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.UUID;
 
 @Controller
+@RequestMapping("/menus")
 public class MenuController {
     private final MenuService menuService;
 
@@ -22,13 +23,13 @@ public class MenuController {
         this.menuService = menuService;
     }
 
-    @GetMapping("/menus")
+    @GetMapping("")
     public String showMenus(Model model) {
         model.addAttribute("menus", menuService.getAllMenus());
         return "menus/menus";
     }
 
-    @GetMapping("/menus/{menuId}")
+    @GetMapping("/{menuId}")
     public String showMenu(@PathVariable String menuId, Model model) {
         UUID id = GlobalUtils.convertStringToUUID(menuId);
         Menu menu = menuService.getMenuById(id);
@@ -36,25 +37,25 @@ public class MenuController {
         return "menus/show";
     }
 
-    @GetMapping("/menus/new")
+    @GetMapping("/new")
     public String showCreateMenuPage(Model model) {
         model.addAttribute("categories", Category.values());
         return "menus/new";
     }
 
-    @PostMapping("/menus/new")
-    public String createMenu(CreateMenuReqDto createMenuReqDto) {
+    @PostMapping("/new")
+    public String createMenu(MenuReqDto menuReqDto) {
         Menu menu = menuService.createMenu(
-                createMenuReqDto.getMenuName(),
-                createMenuReqDto.getCategory(),
-                createMenuReqDto.getPrice(),
-                createMenuReqDto.getImagePath(),
-                createMenuReqDto.getDescription()
+                menuReqDto.getMenuName(),
+                menuReqDto.getCategory(),
+                menuReqDto.getPrice(),
+                menuReqDto.getImagePath(),
+                menuReqDto.getDescription()
         );
         return "redirect:/menus/" + menu.getMenuId();
     }
 
-    @GetMapping("/menus/{menuId}/edit")
+    @GetMapping("/{menuId}/edit")
     public String showUpdateMenuPage(@PathVariable String menuId, Model model) {
         UUID id = GlobalUtils.convertStringToUUID(menuId);
         Menu menu = menuService.getMenuById(id);
@@ -63,21 +64,21 @@ public class MenuController {
         return "menus/edit";
     }
 
-    @PostMapping("/menus/{menuId}/edit")
-    public String updateMenu(CreateMenuReqDto createMenuReqDto, @PathVariable String menuId) {
+    @PostMapping("/{menuId}/edit")
+    public String updateMenu(MenuReqDto menuReqDto, @PathVariable String menuId) {
         UUID id = GlobalUtils.convertStringToUUID(menuId);
         Menu menu = menuService.updateMenu(
                 id,
-                createMenuReqDto.getMenuName(),
-                createMenuReqDto.getCategory(),
-                createMenuReqDto.getPrice(),
-                createMenuReqDto.getImagePath(),
-                createMenuReqDto.getDescription()
+                menuReqDto.getMenuName(),
+                menuReqDto.getCategory(),
+                menuReqDto.getPrice(),
+                menuReqDto.getImagePath(),
+                menuReqDto.getDescription()
         );
         return "redirect:/menus/" + menu.getMenuId();
     }
 
-    @PostMapping("/menus/{menuId}/delete")
+    @PostMapping("/{menuId}/delete")
     public String deleteMenu(@PathVariable String menuId) {
         UUID id = GlobalUtils.convertStringToUUID(menuId);
         menuService.removeMenuById(id);

@@ -19,19 +19,23 @@
         <input type="text" class="form-control" id="menuName" name="menuName">
     </div>
     <div class="mb-3">
-        <label for="category" class="form-label">Category</label>
+        <label for="category" class="form-label">카테고리</label>
         <select class="form-select" id="category" name="category">
             <option selected>Open this select menu</option>
             <option th:each="category:${categories}" th:object="${category}" th:text="${category}" th:value="${category}"></option>
         </select>
     </div>
     <div class="mb-3">
-        <label for="price" class="form-label">Price</label>
+        <label for="price" class="form-label">가격</label>
         <input type="number" class="form-control" id="price" name="price">
     </div>
     <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
+        <label for="description" class="form-label">메뉴 설명</label>
         <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="imagePath" class="form-label">메뉴 이미지 경로</label>
+        <input type="text" class="form-control" id="imagePath" name="imagePath">
     </div>
     <a th:href="@{/menus}" class="btn btn-primary me-md-2" type="button">Back to List</a>
     <button type="submit" class="btn btn-primary">Submit</button>
