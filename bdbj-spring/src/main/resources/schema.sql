@@ -22,3 +22,18 @@ create table orders
     created_at datetime not null ,
     updated_at datetime default null
 );
+
+create table order_item
+(
+    seq bigint not null primary key auto_increment,
+    order_id binary(16) NOT NULL,
+    menu_id binary(16) NOT NULL ,
+    category varchar(50) not null ,
+    price bigint not null ,
+    quantity int not null ,
+    created_at datetime not null ,
+    updated_at datetime not null ,
+    index(order_id),
+    constraint fk_order_items_to_order foreign key (order_id) references orders (order_id) on delete cascade ,
+    constraint fk_order_items_to_menu foreign key (menu_id) references menu (menu_id)
+);

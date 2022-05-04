@@ -1,8 +1,6 @@
 package com.example.bdbj.repository;
 
-import com.example.bdbj.domain.Address;
-import com.example.bdbj.domain.Order;
-import com.example.bdbj.domain.OrderStatus;
+import com.example.bdbj.domain.*;
 import com.example.bdbj.domain.error.ErrorCode;
 import com.example.bdbj.exception.RecordNotUpdatedException;
 import com.example.bdbj.util.GlobalUtils;
@@ -25,17 +23,29 @@ public class JdbcOrderRepository implements OrderRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private static final RowMapper<Order> orderRowMapper = (resultSet, i) -> {
+    private final RowMapper<Order> orderRowMapper = (resultSet, i) -> {
         UUID orderId = toUUID(resultSet.getBytes("order_id"));
         String phoneNumber = resultSet.getString("phone_number");
         String address = resultSet.getString("address");
         String detailedAddress = resultSet.getString("detailed_address");
         String postcode = resultSet.getString("postcode");
+        List<OrderItem> orderItems = findOrderItemsByOrderId(orderId);
         OrderStatus orderStatus = GlobalUtils.convertStringToOrderStatus(resultSet.getString("order_status"));
         LocalDateTime createdAt = toLocalDateTime(resultSet.getTimestamp("created_at"));
         LocalDateTime updatedAt = toLocalDateTime(resultSet.getTimestamp("updated_at"));
         Address addressVo = new Address(address, detailedAddress, postcode);
-        return new Order(orderId, phoneNumber, addressVo, orderStatus, createdAt, updatedAt);
+        return new Order(orderId, phoneNumber, addressVo, orderItems, orderStatus, createdAt, updatedAt);
+    };
+
+    private final RowMapper<OrderItem> orderItemRowMapper = (resultSet, i) -> {
+        UUID orderId = toUUID(resultSet.getBytes("order_id"));
+        UUID menuId = toUUID(resultSet.getBytes("menu_id"));
+        Category category = GlobalUtils.convertStringToCategory(resultSet.getString("category"));
+        Integer price = resultSet.getInt("price");
+        Integer quantity = resultSet.getInt("quantity");
+        LocalDateTime createdAt = toLocalDateTime(resultSet.getTimestamp("created_at"));
+        LocalDateTime updatedAt = toLocalDateTime(resultSet.getTimestamp("updated_at"));
+        return new OrderItem(orderId, menuId, category, price, quantity, createdAt, updatedAt);
     };
 
     private Map<String, Object> toOrderParamMap(Order order) {
@@ -51,22 +61,69 @@ public class JdbcOrderRepository implements OrderRepository {
         return paramMap;
     }
 
-//    private Map<String, Object> toOrderItemParamMap(UUID orderId, LocalDateTime createdAt, LocalDateTime updatedAt, OrderItem item) {
-//        var paramMap = new HashMap<String, Object>();
-//        paramMap.put("orderId", orderId.toString().getBytes());
-//        paramMap.put("productId", item.getProductId().toString().getBytes());
-//        paramMap.put("category", item.getCategory().toString());
-//        paramMap.put("price", item.getPrice());
-//        paramMap.put("quantity", item.getQuantity());
-//        paramMap.put("createdAt", createdAt);
-//        paramMap.put("updatedAt", updatedAt);
-//        return paramMap;
-//    }
+    private Map<String, Object> toOrderItemParamMap(UUID orderId, LocalDateTime createdAt, LocalDateTime updatedAt, OrderItem item) {
+        var paramMap = new HashMap<String, Object>();
+        paramMap.put("orderId", orderId.toString().getBytes());
+        paramMap.put("menuId", item.getMenuId().toString().getBytes());
+        paramMap.put("category", item.getCategory().toString());
+        paramMap.put("price", item.getPrice());
+        paramMap.put("quantity", item.getQuantity());
+        paramMap.put("createdAt", createdAt);
+        paramMap.put("updatedAt", updatedAt);
+        return paramMap;
+    }
 
     @Override
     public Order save(Order order) {
         int updated = jdbcTemplate.update(
-                "insert into orders(order_id, phone_number, address, detailed_address, postcode, order_status, created_at, updated_at) values(UNHEX(REPLACE(:orderId, '-', '')), :phoneNumber, :address, :detailedAddress, :postcode, :orderStatus, :createdAt, :updatedAt)", toOrderParamMap(order));
+                "insert into orders(" +
+                        "order_id, " +
+                        "phone_number, " +
+                        "address, " +
+                        "detailed_address, " +
+                        "postcode, " +
+                        "order_status, " +
+                        "created_at, " +
+                        "updated_at" +
+                        ") values(" +
+                        "UNHEX(REPLACE(:orderId, '-', '')), " +
+                        ":phoneNumber, " +
+                        ":address, " +
+                        ":detailedAddress, " +
+                        ":postcode, " +
+                        ":orderStatus, " +
+                        ":createdAt, " +
+                        ":updatedAt" +
+                        ")",
+                toOrderParamMap(order));
+        order.getOrderItems().forEach(item ->
+                jdbcTemplate.update(
+                        "insert into order_item(" +
+                                "order_id, " +
+                                "menu_id, " +
+                                "category, " +
+                                "price, " +
+                                "quantity, " +
+                                "created_at, " +
+                                "updated_at" +
+                                ") values(" +
+                                "UNHEX(" +
+                                "REPLACE(:orderId, '-', '')), " +
+                                "UNHEX(REPLACE(:menuId, '-', '')), " +
+                                ":category, " +
+                                ":price, " +
+                                ":quantity, " +
+                                ":createdAt, " +
+                                ":updatedAt" +
+                                ")",
+                        toOrderItemParamMap(
+                                order.getOrderId(),
+                                order.getCreatedAt(),
+                                order.getUpdatedAt(),
+                                item
+                        )
+                )
+        );
         if (updated != 1) {
             throw new RecordNotUpdatedException(
                     "Order record cant be inserted!"
@@ -93,6 +150,11 @@ public class JdbcOrderRepository implements OrderRepository {
         } catch (DataAccessException ex) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<OrderItem> findOrderItemsByOrderId(UUID orderId) {
+        return jdbcTemplate.query("select * from order_item where order_id = UNHEX(REPLACE(:orderId, '-', ''))", Collections.singletonMap("orderId", orderId.toString().getBytes()), orderItemRowMapper);
     }
 
     @Override

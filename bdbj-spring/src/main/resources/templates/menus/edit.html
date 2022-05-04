@@ -35,7 +35,7 @@
     </div>
     <div class="mb-3">
         <label for="imagePath" class="form-label">메뉴 이미지 경로</label>
-        <textarea class="form-control" id="imagePath" name="imagePath" rows="3" th:value="${menu.description}"></textarea>
+        <input type="text" class="form-control" id="imagePath" name="imagePath" th:value="${menu.description}">
     </div>
     <a th:href="@{/menus}" class="btn btn-primary me-md-2" type="button">Back to List</a>
     <button type="submit" class="btn btn-primary">Submit</button>
