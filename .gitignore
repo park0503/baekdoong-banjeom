@@ -10,4 +10,6 @@ bdbj-spring/*.iws
 bdbj-spring/*.iml
 bdbj-spring/*.ipr
 
-*/application-secret.yml
+**/application-secret.yml
+
+bdbj-react/node_modules
