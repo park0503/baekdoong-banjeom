@@ -83,12 +83,12 @@ class OrderServiceTest {
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem0);
         orderItems.add(orderItem1);
-
+        Address address = new Address("경기도 수원시 원천동 28-37",
+                "나동 302호",
+                "16502");
         Order order = orderService.createOrder(
                 "119",
-                "경기도 수원시 원천동 28-37",
-                "나동 302호",
-                "16502",
+                address,
                 orderItems
         );
 

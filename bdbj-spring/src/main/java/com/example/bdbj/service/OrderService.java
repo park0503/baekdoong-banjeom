@@ -24,13 +24,12 @@ public class OrderService {
         return  orderRepository.save(order);
     }
 
-    public Order createOrder(String phoneNumber, String address, String detailedAddress, String postcode, List<OrderItem> orderItems) {
-        Address addressVo = new Address(address, detailedAddress, postcode);
+    public Order createOrder(String phoneNumber, Address address, List<OrderItem> orderItems) {
         return orderRepository.save(
                 new Order(
                         UUID.randomUUID(),
                         phoneNumber,
-                        addressVo,
+                        address,
                         orderItems,
                         OrderStatus.ORDERED
                 )
