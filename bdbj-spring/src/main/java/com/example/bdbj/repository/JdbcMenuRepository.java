@@ -73,7 +73,7 @@ public class JdbcMenuRepository implements MenuRepository{
                 , toParamMap(menu));
         if (updated != 1) {
             throw new RecordNotUpdatedException(
-                    "Record cant be inserted!"
+                    "Menu record cant be inserted!"
                     , ErrorCode.MENU_NOT_UPDATED
             );
         }
@@ -143,7 +143,7 @@ public class JdbcMenuRepository implements MenuRepository{
                 , toParamMap(menu));
         if (updated != 1) {
             throw new RecordNotUpdatedException(
-                    "Record cant be updated!"
+                    "Menu record cant be updated!"
                     , ErrorCode.MENU_NOT_UPDATED
             );
         }

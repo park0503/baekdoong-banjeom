@@ -8,6 +8,7 @@ import lombok.NonNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -16,7 +17,7 @@ public class Order {
     private final UUID orderId;
     private final String phoneNumber;
     private final Address address;
-    private List<OrderItem> orderItems = new ArrayList<>();
+//    private List<OrderItem> orderItems = new ArrayList<>();
     private OrderStatus orderStatus;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -28,5 +29,14 @@ public class Order {
         this.address = address;
         this.createdAt = LocalDateTime.now().withNano(0);
         this.orderStatus = OrderStatus.CART;
+    }
+
+    public void setOrderStatus(@NonNull OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+        updateUpdatedAt();
+    }
+
+    public void updateUpdatedAt() {
+        this.updatedAt = LocalDateTime.now().withNano(0);
     }
 }

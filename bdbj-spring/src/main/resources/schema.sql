@@ -9,4 +9,16 @@ create table menu
     created_at datetime not null ,
     updated_at datetime default null,
     CONSTRAINT unq_menu_name UNIQUE (menu_name)
-)
+);
+
+create table orders
+(
+    order_id binary(16) primary key,
+    phone_number varchar(20) not null ,
+    address varchar(100) not null ,
+    detailed_address varchar(100) not null ,
+    postcode varchar(200) not null ,
+    order_status varchar(50) not null ,
+    created_at datetime not null ,
+    updated_at datetime default null
+);
