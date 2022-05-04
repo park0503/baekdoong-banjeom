@@ -15,27 +15,23 @@ public class Order {
     private final UUID orderId;
     private final String phoneNumber;
     private final Address address;
-    private List<OrderItem> orderItems;
+    private final List<OrderItem> orderItems;
     private OrderStatus orderStatus;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @Builder
-    public Order(@NonNull UUID orderId, @NonNull String phoneNumber, @NonNull Address address) {
+    public Order(@NonNull UUID orderId, @NonNull String phoneNumber, @NonNull Address address, @NonNull List<OrderItem> orderItems, OrderStatus orderStatus) {
         this.orderId = orderId;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.orderItems = orderItems;
         this.createdAt = LocalDateTime.now().withNano(0);
-        this.orderStatus = OrderStatus.CART;
+        this.orderStatus = orderStatus != null ? orderStatus : OrderStatus.CART;
     }
 
     public void setOrderStatus(@NonNull OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
-        updateUpdatedAt();
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
         updateUpdatedAt();
     }
 

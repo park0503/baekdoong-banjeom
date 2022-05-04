@@ -32,7 +32,7 @@ create table order_item
     price bigint not null ,
     quantity int not null ,
     created_at datetime not null ,
-    updated_at datetime not null ,
+    updated_at datetime default null,
     index(order_id),
     constraint fk_order_items_to_order foreign key (order_id) references orders (order_id) on delete cascade ,
     constraint fk_order_items_to_menu foreign key (menu_id) references menu (menu_id)

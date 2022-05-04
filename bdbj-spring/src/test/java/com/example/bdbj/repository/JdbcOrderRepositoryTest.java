@@ -71,27 +71,25 @@ class JdbcOrderRepositoryTest {
                 .price(7000)
                 .build());
         Address address = new Address("경기도 수원시 원천동 28-37", "나동 302호", "16502");
-        Order order = Order.builder()
-                .orderId(UUID.randomUUID())
-                .phoneNumber("119")
-                .address(address)
-                .build();
         List<OrderItem> orderItems = new ArrayList<>();
         OrderItem orderItem0 = OrderItem.builder().
-                orderId(order.getOrderId()).
                 menuId(menu0.getMenuId()).
                 category(menu0.getCategory()).
                 price(menu0.getPrice()).
                 build();
         OrderItem orderItem1 = OrderItem.builder().
-                orderId(order.getOrderId()).
                 menuId(menu1.getMenuId()).
                 category(menu1.getCategory()).
                 price(menu1.getPrice()).
                 build();
         orderItems.add(orderItem0);
         orderItems.add(orderItem1);
-        order.setOrderItems(orderItems);
+        Order order = Order.builder().
+                orderId(UUID.randomUUID()).
+                phoneNumber("119").
+                address(address).
+                orderItems(orderItems).
+                build();
         orderRepository.save(order);
 
         Optional<Order> findOrder = orderRepository.findById(order.getOrderId());
@@ -133,27 +131,25 @@ class JdbcOrderRepositoryTest {
                 .price(7000)
                 .build());
         Address address = new Address("경기도 수원시 원천동 28-37", "나동 302호", "16502");
-        Order order = Order.builder()
-                .orderId(UUID.randomUUID())
-                .phoneNumber("119")
-                .address(address)
-                .build();
         List<OrderItem> orderItems = new ArrayList<>();
         OrderItem orderItem0 = OrderItem.builder().
-                orderId(order.getOrderId()).
                 menuId(menu0.getMenuId()).
                 category(menu0.getCategory()).
                 price(menu0.getPrice()).
                 build();
         OrderItem orderItem1 = OrderItem.builder().
-                orderId(order.getOrderId()).
                 menuId(menu1.getMenuId()).
                 category(menu1.getCategory()).
                 price(menu1.getPrice()).
                 build();
         orderItems.add(orderItem0);
         orderItems.add(orderItem1);
-        order.setOrderItems(orderItems);
+        Order order = Order.builder().
+                orderId(UUID.randomUUID()).
+                phoneNumber("119").
+                address(address).
+                orderItems(orderItems).
+                build();
         orderRepository.save(order);
 
         List<Order> orders = orderRepository.findByPhoneNumber(order.getPhoneNumber());
@@ -177,27 +173,25 @@ class JdbcOrderRepositoryTest {
                 .price(7000)
                 .build());
         Address address = new Address("경기도 수원시 원천동 28-37", "나동 302호", "16502");
-        Order order = Order.builder()
-                .orderId(UUID.randomUUID())
-                .phoneNumber("119")
-                .address(address)
-                .build();
         List<OrderItem> orderItems = new ArrayList<>();
         OrderItem orderItem0 = OrderItem.builder().
-                orderId(order.getOrderId()).
                 menuId(menu0.getMenuId()).
                 category(menu0.getCategory()).
                 price(menu0.getPrice()).
                 build();
         OrderItem orderItem1 = OrderItem.builder().
-                orderId(order.getOrderId()).
                 menuId(menu1.getMenuId()).
                 category(menu1.getCategory()).
                 price(menu1.getPrice()).
                 build();
         orderItems.add(orderItem0);
         orderItems.add(orderItem1);
-        order.setOrderItems(orderItems);
+        Order order = Order.builder().
+                orderId(UUID.randomUUID()).
+                phoneNumber("119").
+                address(address).
+                orderItems(orderItems).
+                build();
         orderRepository.save(order);
 
         order.setOrderStatus(OrderStatus.ORDERED);

@@ -26,7 +26,7 @@ class MenuServiceTest {
     @Autowired
     MenuService service;
 
-    static EmbeddedMysql embeddedMysql;
+    EmbeddedMysql embeddedMysql;
 
     @BeforeAll
     public void setUp() {

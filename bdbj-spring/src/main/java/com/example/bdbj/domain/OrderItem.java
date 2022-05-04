@@ -20,7 +20,7 @@ public class OrderItem {
     private LocalDateTime updatedAt;
 
     @Builder
-    public OrderItem(@NonNull UUID orderId, @NonNull UUID menuId, @NonNull Category category, @NonNull Integer price) {
+    public OrderItem(UUID orderId, @NonNull UUID menuId, @NonNull Category category, @NonNull Integer price) {
         this.orderId = orderId;
         this.menuId = menuId;
         this.category = category;
