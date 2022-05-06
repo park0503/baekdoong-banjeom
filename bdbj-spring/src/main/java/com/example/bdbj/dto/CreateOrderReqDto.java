@@ -1,11 +1,9 @@
 package com.example.bdbj.dto;
 
 import com.example.bdbj.domain.OrderItem;
-import lombok.Getter;
 
 import java.util.List;
 
-@Getter
 public class CreateOrderReqDto {
     private final String phoneNumber;
     private final String address;
@@ -19,5 +17,25 @@ public class CreateOrderReqDto {
         this.detailedAddress = detailedAddress;
         this.postcode = postcode;
         this.orderItems = orderItems;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getDetailedAddress() {
+        return detailedAddress;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 }

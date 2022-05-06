@@ -2,15 +2,13 @@ package com.example.bdbj.domain;
 
 import com.example.bdbj.domain.error.ErrorCode;
 import com.example.bdbj.exception.InvalidInputException;
-import lombok.*;
+import lombok.Builder;
+import lombok.NonNull;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-@ToString
-@Getter
-@AllArgsConstructor
 public class Menu {
     private final UUID menuId;
     private String menuName;
@@ -20,6 +18,17 @@ public class Menu {
     private String description;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public Menu(UUID menuId, String menuName, Category category, Integer price, String imagePath, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.menuId = menuId;
+        this.menuName = menuName;
+        this.category = category;
+        this.price = price;
+        this.imagePath = imagePath;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
     @Builder
     public Menu(@NonNull UUID menuId, @NonNull Integer price, @NonNull String menuName, @NonNull Category category, String imagePath, String description) {
@@ -31,6 +40,38 @@ public class Menu {
         this.imagePath = imagePath;
         this.description = description;
         this.createdAt = LocalDateTime.now().withNano(0);
+    }
+
+    public UUID getMenuId() {
+        return menuId;
+    }
+
+    public String getMenuName() {
+        return menuName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     public void setMenuName(@NonNull String menuName) {

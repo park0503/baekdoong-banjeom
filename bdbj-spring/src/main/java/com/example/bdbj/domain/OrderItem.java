@@ -7,7 +7,6 @@ import lombok.NonNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
 public class OrderItem {
     private final UUID orderId;
     private final UUID menuId;
@@ -28,5 +27,37 @@ public class OrderItem {
         this.quantity = quantity != null ? quantity : 1;
         this.createdAt = createdAt != null ? createdAt : LocalDateTime.now().withNano(0);
         this.updatedAt = updatedAt;
+    }
+
+    public UUID getOrderId() {
+        return orderId;
+    }
+
+    public UUID getMenuId() {
+        return menuId;
+    }
+
+    public String getMenuName() {
+        return menuName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

@@ -2,11 +2,9 @@ package com.example.bdbj.dto;
 
 import com.example.bdbj.domain.Category;
 import com.example.bdbj.domain.Menu;
-import lombok.Getter;
 
 import java.util.UUID;
 
-@Getter
 public class MenuResDto {
     private final UUID menuId;
     private final String menuName;
@@ -22,5 +20,29 @@ public class MenuResDto {
         this.price = entity.getPrice();
         this.imagePath = entity.getImagePath();
         this.description = entity.getDescription();
+    }
+
+    public UUID getMenuId() {
+        return menuId;
+    }
+
+    public String getMenuName() {
+        return menuName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
