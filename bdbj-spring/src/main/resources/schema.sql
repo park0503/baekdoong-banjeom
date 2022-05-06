@@ -29,6 +29,7 @@ create table order_item
     order_id binary(16) NOT NULL,
     menu_id binary(16) NOT NULL ,
     category varchar(50) not null ,
+    menu_name varchar(30) not null,
     price bigint not null ,
     quantity int not null ,
     created_at datetime not null ,
