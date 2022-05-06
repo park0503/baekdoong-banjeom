@@ -55,6 +55,10 @@ public class OrderService {
         return orderRepository.findByPhoneNumber(phoneNumber);
     }
 
+    public Order updateOrder(Order order) {
+        return orderRepository.update(order);
+    }
+
     public void removeAllOrder() {
         orderRepository.deleteAll();
     }

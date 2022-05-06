@@ -40,12 +40,13 @@ public class JdbcOrderRepository implements OrderRepository {
     private final RowMapper<OrderItem> orderItemRowMapper = (resultSet, i) -> {
         UUID orderId = toUUID(resultSet.getBytes("order_id"));
         UUID menuId = toUUID(resultSet.getBytes("menu_id"));
+        String menuName = resultSet.getString("menu_name");
         Category category = GlobalUtils.convertStringToCategory(resultSet.getString("category"));
         Integer price = resultSet.getInt("price");
         Integer quantity = resultSet.getInt("quantity");
         LocalDateTime createdAt = toLocalDateTime(resultSet.getTimestamp("created_at"));
         LocalDateTime updatedAt = toLocalDateTime(resultSet.getTimestamp("updated_at"));
-        return new OrderItem(orderId, menuId, category, price, quantity, createdAt, updatedAt);
+        return new OrderItem(orderId, menuId, menuName, category, price, quantity, createdAt, updatedAt);
     };
 
     private Map<String, Object> toOrderParamMap(Order order) {
@@ -65,6 +66,7 @@ public class JdbcOrderRepository implements OrderRepository {
         var paramMap = new HashMap<String, Object>();
         paramMap.put("orderId", orderId.toString().getBytes());
         paramMap.put("menuId", item.getMenuId().toString().getBytes());
+        paramMap.put("menuName", item.getMenuName());
         paramMap.put("category", item.getCategory().toString());
         paramMap.put("price", item.getPrice());
         paramMap.put("quantity", item.getQuantity());
@@ -101,6 +103,7 @@ public class JdbcOrderRepository implements OrderRepository {
                         "insert into order_item(" +
                                 "order_id, " +
                                 "menu_id, " +
+                                "menu_name, " +
                                 "category, " +
                                 "price, " +
                                 "quantity, " +
@@ -110,6 +113,7 @@ public class JdbcOrderRepository implements OrderRepository {
                                 "UNHEX(" +
                                 "REPLACE(:orderId, '-', '')), " +
                                 "UNHEX(REPLACE(:menuId, '-', '')), " +
+                                ":menuName," +
                                 ":category, " +
                                 ":price, " +
                                 ":quantity, " +
