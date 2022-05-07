@@ -38,6 +38,7 @@ function App() {
                 postcode: order.postcode,
                 orderItems: items.map(i => ({
                     menuId: i.menuId,
+                    menuName: i.menuName,
                     category: i.category,
                     price: i.price,
                     quantity: i.count
