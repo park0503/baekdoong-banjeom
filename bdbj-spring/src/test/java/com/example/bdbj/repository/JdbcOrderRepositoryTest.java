@@ -62,11 +62,11 @@ class JdbcOrderRepositoryTest {
         Menu menu1 = menuRepository.save(new Menu(UUID.randomUUID(), 7000, "짬뽕", Category.MEAL));
         Address address = new Address("경기도 수원시 원천동 28-37", "나동 302호", "16502");
         List<OrderItem> orderItems = new ArrayList<>();
-        OrderItem orderItem0 = new OrderItem(menu0.getMenuId(), menu0.getMenuName(), menu0.getCategory(), menu0.getPrice());
-        OrderItem orderItem1 = new OrderItem(menu1.getMenuId(), menu1.getMenuName(), menu1.getCategory(), menu1.getPrice());
+        OrderItem orderItem0 = new OrderItem(null, menu0.getMenuId(), menu0.getMenuName(), menu0.getCategory(), menu0.getPrice(), 3, null, null);
+        OrderItem orderItem1 = new OrderItem(null, menu1.getMenuId(), menu1.getMenuName(), menu1.getCategory(), menu1.getPrice(), 3, null, null);
         orderItems.add(orderItem0);
         orderItems.add(orderItem1);
-        Order order = new Order(UUID.randomUUID(), "119", address, orderItems);
+        Order order = new Order(UUID.randomUUID(), "119", address, orderItems, null);
         orderRepository.save(order);
 
         Optional<Order> findOrder = orderRepository.findById(order.getOrderId());
@@ -99,11 +99,11 @@ class JdbcOrderRepositoryTest {
         Menu menu1 = menuRepository.save(new Menu(UUID.randomUUID(), 7000, "짬뽕", Category.MEAL));
         Address address = new Address("경기도 수원시 원천동 28-37", "나동 302호", "16502");
         List<OrderItem> orderItems = new ArrayList<>();
-        OrderItem orderItem0 = new OrderItem(menu0.getMenuId(), menu0.getMenuName(), menu0.getCategory(), menu0.getPrice());
-        OrderItem orderItem1 = new OrderItem(menu1.getMenuId(), menu1.getMenuName(), menu1.getCategory(), menu1.getPrice());
+        OrderItem orderItem0 = new OrderItem(null, menu0.getMenuId(), menu0.getMenuName(), menu0.getCategory(), menu0.getPrice(),3 , null, null);
+        OrderItem orderItem1 = new OrderItem(null, menu1.getMenuId(), menu1.getMenuName(), menu1.getCategory(), menu1.getPrice(),3 , null, null);
         orderItems.add(orderItem0);
         orderItems.add(orderItem1);
-        Order order = new Order(UUID.randomUUID(), "119", address, orderItems);
+        Order order = new Order(UUID.randomUUID(), "119", address, orderItems, null);
         orderRepository.save(order);
 
         List<Order> orders = orderRepository.findByPhoneNumber(order.getPhoneNumber());
@@ -118,11 +118,11 @@ class JdbcOrderRepositoryTest {
         Menu menu1 = menuRepository.save(new Menu(UUID.randomUUID(), 7000, "짬뽕", Category.MEAL));
         Address address = new Address("경기도 수원시 원천동 28-37", "나동 302호", "16502");
         List<OrderItem> orderItems = new ArrayList<>();
-        OrderItem orderItem0 = new OrderItem(menu0.getMenuId(), menu0.getMenuName(), menu0.getCategory(), menu0.getPrice());
-        OrderItem orderItem1 = new OrderItem(menu1.getMenuId(), menu1.getMenuName(), menu1.getCategory(), menu1.getPrice());
+        OrderItem orderItem0 = new OrderItem(null, menu0.getMenuId(), menu0.getMenuName(), menu0.getCategory(), menu0.getPrice(),3, null, null);
+        OrderItem orderItem1 = new OrderItem(null, menu1.getMenuId(), menu1.getMenuName(), menu1.getCategory(), menu1.getPrice(),3, null, null);
         orderItems.add(orderItem0);
         orderItems.add(orderItem1);
-        Order order = new Order(UUID.randomUUID(), "119", address, orderItems);
+        Order order = new Order(UUID.randomUUID(), "119", address, orderItems, null);
         orderRepository.save(order);
 
         order.setOrderStatus(OrderStatus.ORDERED);

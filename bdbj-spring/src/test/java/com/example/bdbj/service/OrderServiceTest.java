@@ -60,8 +60,8 @@ class OrderServiceTest {
     public void testCreate() {
         Menu menu0 = menuRepository.save(new Menu(UUID.randomUUID(), 6000, "짜장면", Category.MEAL));
         Menu menu1 = menuRepository.save(new Menu(UUID.randomUUID(), 7000, "짬뽕", Category.MEAL));
-        OrderItem orderItem0 = new OrderItem(menu0.getMenuId(), menu0.getMenuName(), menu0.getCategory(), menu0.getPrice());
-        OrderItem orderItem1 = new OrderItem(menu1.getMenuId(), menu1.getMenuName(), menu1.getCategory(), menu1.getPrice());
+        OrderItem orderItem0 = new OrderItem(null, menu0.getMenuId(), menu0.getMenuName(), menu0.getCategory(), menu0.getPrice(), 3, null, null);
+        OrderItem orderItem1 = new OrderItem(null, menu1.getMenuId(), menu1.getMenuName(), menu1.getCategory(), menu1.getPrice(), 3, null, null);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem0);
         orderItems.add(orderItem1);

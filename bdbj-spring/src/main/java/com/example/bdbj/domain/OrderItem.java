@@ -27,17 +27,6 @@ public class OrderItem {
         this.updatedAt = updatedAt;
     }
 
-    public OrderItem(UUID menuId, String menuName, Category category, Integer price) {
-        GlobalUtils.checkMenuNull(menuId, menuName, category, price);
-        this.orderId = null;
-        this.menuId = menuId;
-        this.menuName = menuName;
-        this.category = category;
-        this.price = price;
-        this.quantity = 1;
-        this.createdAt = LocalDateTime.now().withNano(0);
-    }
-
     public UUID getOrderId() {
         return orderId;
     }

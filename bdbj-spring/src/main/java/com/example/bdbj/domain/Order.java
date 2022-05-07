@@ -28,13 +28,13 @@ public class Order {
         this.updatedAt = updatedAt;
     }
 
-    public Order(UUID orderId, String phoneNumber, Address address, List<OrderItem> orderItems) {
+    public Order(UUID orderId, String phoneNumber, Address address, List<OrderItem> orderItems, OrderStatus orderStatus) {
         checkOrder(orderId, phoneNumber, address, orderItems);
         this.orderId = orderId;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.orderItems = orderItems;
-        this.orderStatus = OrderStatus.ORDERED;
+        this.orderStatus = orderStatus != null ? orderStatus : OrderStatus.ORDERED;
         this.createdAt = LocalDateTime.now().withNano(0);
     }
 
