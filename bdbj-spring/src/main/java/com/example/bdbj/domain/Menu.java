@@ -2,15 +2,12 @@ package com.example.bdbj.domain;
 
 import com.example.bdbj.domain.error.ErrorCode;
 import com.example.bdbj.exception.InvalidInputException;
-import lombok.*;
+import com.example.bdbj.util.GlobalUtils;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-@ToString
-@Getter
-@AllArgsConstructor
 public class Menu {
     private final UUID menuId;
     private String menuName;
@@ -21,29 +18,87 @@ public class Menu {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @Builder
-    public Menu(@NonNull UUID menuId, @NonNull Integer price, @NonNull String menuName, @NonNull Category category, String imagePath, String description) {
+    public Menu(UUID menuId, String menuName, Category category, Integer price, String imagePath, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        GlobalUtils.checkMenuNull(menuId, menuName, category, price);
         checkPrice(price);
         this.menuId = menuId;
-        this.price = price;
         this.menuName = menuName;
         this.category = category;
+        this.price = price;
+        this.imagePath = imagePath;
+        this.description = description;
+        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now().withNano(0);
+        this.updatedAt = updatedAt;
+    }
+
+    public Menu(UUID menuId, String menuName, Category category, Integer price, String imagePath, String description) {
+        GlobalUtils.checkMenuNull(menuId, menuName, category, price);
+        checkPrice(price);
+        this.menuId = menuId;
+        this.menuName = menuName;
+        this.category = category;
+        this.price = price;
         this.imagePath = imagePath;
         this.description = description;
         this.createdAt = LocalDateTime.now().withNano(0);
     }
 
-    public void setMenuName(@NonNull String menuName) {
+    public Menu(UUID menuId, Integer price, String menuName, Category category) {
+        GlobalUtils.checkMenuNull(menuId, menuName, category, price);
+        checkPrice(price);
+        this.menuId = menuId;
+        this.price = price;
+        this.menuName = menuName;
+        this.category = category;
+        this.createdAt = LocalDateTime.now().withNano(0);
+    }
+
+    public UUID getMenuId() {
+        return menuId;
+    }
+
+    public String getMenuName() {
+        return menuName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setMenuName(String menuName) {
+        GlobalUtils.checkNull(menuName);
         this.menuName = menuName;
         updatedUpdatedAt();
     }
 
-    public void setCategory(@NonNull Category category) {
+    public void setCategory(Category category) {
+        GlobalUtils.checkNull(category);
         this.category = category;
         updatedUpdatedAt();
     }
 
-    public void setPrice(@NonNull Integer price) {
+    public void setPrice(Integer price) {
+        GlobalUtils.checkNull(price);
         checkPrice(price);
         this.price = price;
         updatedUpdatedAt();

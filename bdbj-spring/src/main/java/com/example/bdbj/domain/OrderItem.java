@@ -1,13 +1,10 @@
 package com.example.bdbj.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
+import com.example.bdbj.util.GlobalUtils;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
 public class OrderItem {
     private final UUID orderId;
     private final UUID menuId;
@@ -16,10 +13,10 @@ public class OrderItem {
     private final Integer price;
     private final Integer quantity;
     private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
-    @Builder
-    public OrderItem(UUID orderId, @NonNull UUID menuId, @NonNull String menuName, @NonNull Category category, @NonNull Integer price, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderItem(UUID orderId, UUID menuId, String menuName, Category category, Integer price, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        GlobalUtils.checkMenuNull(menuId, menuName, category, price);
         this.orderId = orderId;
         this.menuId = menuId;
         this.menuName = menuName;
@@ -28,5 +25,37 @@ public class OrderItem {
         this.quantity = quantity != null ? quantity : 1;
         this.createdAt = createdAt != null ? createdAt : LocalDateTime.now().withNano(0);
         this.updatedAt = updatedAt;
+    }
+
+    public UUID getOrderId() {
+        return orderId;
+    }
+
+    public UUID getMenuId() {
+        return menuId;
+    }
+
+    public String getMenuName() {
+        return menuName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

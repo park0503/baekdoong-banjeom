@@ -17,7 +17,7 @@ import static com.wix.mysql.ScriptResolver.classPathScript;
 import static com.wix.mysql.config.Charset.UTF8;
 import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
 import static com.wix.mysql.distribution.Version.v5_7_latest;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -53,12 +53,7 @@ class JdbcMenuRepositoryTest {
     @Test
     @DisplayName("생성한 객체를 DB에 저장하고 아이디로 찾을 수 있다.")
     public void testSave() {
-        Menu menu = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("짜장면")
-                .category(Category.MEAL)
-                .price(6000)
-                .build());
+        Menu menu = menuRepository.save(new Menu(UUID.randomUUID(), 6000, "짜장면", Category.MEAL));
 
         Optional<Menu> findMenu = menuRepository.findById(menu.getMenuId());
         List<Menu> allMenus = menuRepository.findAll();
@@ -70,24 +65,9 @@ class JdbcMenuRepositoryTest {
     @Test
     @DisplayName("Menu를 이름으로 검색할 수 있다.")
     public void testFindByName() {
-        Menu menu0 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("짜장면")
-                .category(Category.MEAL)
-                .price(6000)
-                .build());
-        Menu menu1 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("짬뽕")
-                .category(Category.MEAL)
-                .price(7000)
-                .build());
-        Menu menu2 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("쟁반짜장")
-                .category(Category.MEAL)
-                .price(10000)
-                .build());
+        Menu menu0 = menuRepository.save(new Menu(UUID.randomUUID(), 6000, "짜장면", Category.MEAL));
+        Menu menu1 = menuRepository.save(new Menu(UUID.randomUUID(), 7000, "짬뽕", Category.MEAL));
+        Menu menu2 = menuRepository.save(new Menu(UUID.randomUUID(), 10000, "쟁반짜장", Category.MEAL));
 
         List<Menu> allMenus = menuRepository.findAll();
         allMenus.forEach((m) -> System.out.println(m.toString()));
@@ -100,24 +80,9 @@ class JdbcMenuRepositoryTest {
     @Test
     @DisplayName("메뉴를 카테고리로 검색할 수 있다.")
     public void testFindByCategory() {
-        Menu menu0 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("짜장면")
-                .category(Category.MEAL)
-                .price(6000)
-                .build());
-        Menu menu1 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("탕수육")
-                .category(Category.CUISINE)
-                .price(18000)
-                .build());
-        Menu menu2 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("깐풍기")
-                .category(Category.CUISINE)
-                .price(20000)
-                .build());
+        Menu menu0 = menuRepository.save(new Menu(UUID.randomUUID(), 6000, "짜장면", Category.MEAL));
+        Menu menu1 = menuRepository.save(new Menu(UUID.randomUUID(), 18000, "탕수육", Category.CUISINE));
+        Menu menu2 = menuRepository.save(new Menu(UUID.randomUUID(), 20000, "깐풍기", Category.CUISINE));
 
         List<Menu> allMenus = menuRepository.findAll();
         List<Menu> findMeals = menuRepository.findByCategory(Category.MEAL);
@@ -131,14 +96,7 @@ class JdbcMenuRepositoryTest {
     @Test
     @DisplayName("생성한 객체를 업데이트 할 수 있따..")
     public void testUpdate() {
-        Menu menu = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("짜장면")
-                .category(Category.MEAL)
-                .price(6000)
-                .description("짜장면 입니다.")
-                .imagePath("naver.com")
-                .build());
+        Menu menu = menuRepository.save(new Menu(UUID.randomUUID(), 6000, "짜장면", Category.MEAL));
 
         menu.setMenuName("탕수육");
         menu.setPrice(18000);
@@ -155,24 +113,9 @@ class JdbcMenuRepositoryTest {
     @Test
     @DisplayName("메뉴를 id를 통해 삭제할 수 있다.")
     public void testDeleteById() {
-        Menu menu0 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("짜장면")
-                .category(Category.MEAL)
-                .price(6000)
-                .build());
-        Menu menu1 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("탕수육")
-                .category(Category.CUISINE)
-                .price(18000)
-                .build());
-        Menu menu2 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("깐풍기")
-                .category(Category.CUISINE)
-                .price(20000)
-                .build());
+        Menu menu0 = menuRepository.save(new Menu(UUID.randomUUID(), 6000, "짜장면", Category.MEAL));
+        Menu menu1 = menuRepository.save(new Menu(UUID.randomUUID(), 18000, "탕수육", Category.CUISINE));
+        Menu menu2 = menuRepository.save(new Menu(UUID.randomUUID(), 20000, "깐풍기", Category.CUISINE));
 
         menuRepository.deleteById(menu0.getMenuId());
         List<Menu> allMenus = menuRepository.findAll();

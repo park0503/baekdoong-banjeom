@@ -1,7 +1,7 @@
 package com.example.bdbj.service;
 
-import com.example.bdbj.domain.*;
 import com.example.bdbj.domain.Order;
+import com.example.bdbj.domain.*;
 import com.example.bdbj.repository.MenuRepository;
 import com.wix.mysql.EmbeddedMysql;
 import com.wix.mysql.config.MysqldConfig;
@@ -58,28 +58,10 @@ class OrderServiceTest {
     @Test
     @DisplayName("주문을 생성할 수 있다.")
     public void testCreate() {
-        Menu menu0 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("짜장면")
-                .category(Category.MEAL)
-                .price(6000)
-                .build());
-        Menu menu1 = menuRepository.save(Menu.builder()
-                .menuId(UUID.randomUUID())
-                .menuName("짬뽕")
-                .category(Category.MEAL)
-                .price(7000)
-                .build());
-        OrderItem orderItem0 = OrderItem.builder().
-                menuId(menu0.getMenuId()).
-                category(menu0.getCategory()).
-                price(menu0.getPrice()).
-                build();
-        OrderItem orderItem1 = OrderItem.builder().
-                menuId(menu1.getMenuId()).
-                category(menu1.getCategory()).
-                price(menu1.getPrice()).
-                build();
+        Menu menu0 = menuRepository.save(new Menu(UUID.randomUUID(), 6000, "짜장면", Category.MEAL));
+        Menu menu1 = menuRepository.save(new Menu(UUID.randomUUID(), 7000, "짬뽕", Category.MEAL));
+        OrderItem orderItem0 = new OrderItem(null, menu0.getMenuId(), menu0.getMenuName(), menu0.getCategory(), menu0.getPrice(), 3, null, null);
+        OrderItem orderItem1 = new OrderItem(null, menu1.getMenuId(), menu1.getMenuName(), menu1.getCategory(), menu1.getPrice(), 3, null, null);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem0);
         orderItems.add(orderItem1);

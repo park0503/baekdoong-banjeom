@@ -40,4 +40,16 @@ public class GlobalUtils {
             throw new InvalidInputException("Invalid category.", ErrorCode.INVALID_ORDER_STATUS);
         }
     }
+
+    public static void checkNull(Object object) {
+        if (object == null) {
+            throw new FieldBlankException("입력값이 부족합니다.", ErrorCode.FIELD_BLANK);
+        }
+    }
+
+    public static void checkMenuNull(UUID menuId, String menuName, Category category, Integer price) {
+        if (menuId == null || price == null || menuName == null || category == null)  {
+            throw new FieldBlankException("입력값이 부족합니다.", ErrorCode.FIELD_BLANK);
+        }
+    }
 }

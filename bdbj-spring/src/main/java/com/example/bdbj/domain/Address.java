@@ -1,23 +1,32 @@
 package com.example.bdbj.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
+import com.example.bdbj.domain.error.ErrorCode;
+import com.example.bdbj.exception.FieldBlankException;
 
 import java.util.Objects;
 
-@Getter
 public class Address {
     private final String address;
     private final String detailedAddress;
     private final String postcode;
 
-    @Builder
-    public Address(@NonNull String address, @NonNull String detailedAddress, @NonNull String postcode) {
+    public Address(String address, String detailedAddress, String postcode) {
+        checkInput(address, detailedAddress, postcode);
         this.address = address;
         this.detailedAddress = detailedAddress;
         this.postcode = postcode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getDetailedAddress() {
+        return detailedAddress;
+    }
+
+    public String getPostcode() {
+        return postcode;
     }
 
     @Override
@@ -31,5 +40,11 @@ public class Address {
     @Override
     public int hashCode() {
         return Objects.hash(address, detailedAddress, postcode);
+    }
+
+    private void checkInput(String address, String detailedAddress, String postcode) {
+        if (address == null || detailedAddress == null || postcode == null) {
+            throw new FieldBlankException("주소값을 확인해주세요.", ErrorCode.FIELD_BLANK);
+        }
     }
 }

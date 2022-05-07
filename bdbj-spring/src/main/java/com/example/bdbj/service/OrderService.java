@@ -31,7 +31,9 @@ public class OrderService {
                         phoneNumber,
                         address,
                         orderItems,
-                        OrderStatus.ORDERED
+                        OrderStatus.ORDERED,
+                        null,
+                        null
                 )
         );
     }
