@@ -35,7 +35,7 @@
 ![image](https://user-images.githubusercontent.com/62789083/167266520-7795145e-6f7b-47c2-b456-acd94d4da320.png)
    - 응답 json
  
- ![image](https://user-images.githubusercontent.com/62789083/167266533-24edeeeb-2571-45ea-85df-5394e29a69d5.png)
+![image](https://user-images.githubusercontent.com/62789083/167270718-cea1d4f7-ad12-41c2-83bb-71da2acdd7da.png)
 
 - 카테고리 가져오기
 
