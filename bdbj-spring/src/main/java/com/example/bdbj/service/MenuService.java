@@ -56,14 +56,7 @@ public class MenuService {
             throw new ValueDuplicationException("메뉴 이름이 중복됩니다.", ErrorCode.MENU_NAME_DUPLICATION);
         }
         return menuRepository.save(
-                Menu.builder()
-                        .menuId(UUID.randomUUID())
-                        .menuName(menuName)
-                        .category(category)
-                        .price(price)
-                        .imagePath(imagePath)
-                        .description(description)
-                        .build()
+                new Menu(UUID.randomUUID(), menuName, category, price, imagePath, description)
         );
     }
 

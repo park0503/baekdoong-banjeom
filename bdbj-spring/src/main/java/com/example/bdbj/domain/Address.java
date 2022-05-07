@@ -2,8 +2,6 @@ package com.example.bdbj.domain;
 
 import com.example.bdbj.domain.error.ErrorCode;
 import com.example.bdbj.exception.FieldBlankException;
-import lombok.Builder;
-import lombok.NonNull;
 
 import java.util.Objects;
 

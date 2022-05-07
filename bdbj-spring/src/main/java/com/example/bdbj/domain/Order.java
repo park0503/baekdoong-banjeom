@@ -1,7 +1,8 @@
 package com.example.bdbj.domain;
 
-import lombok.Builder;
-import lombok.NonNull;
+import com.example.bdbj.domain.error.ErrorCode;
+import com.example.bdbj.exception.FieldBlankException;
+import com.example.bdbj.util.GlobalUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,23 +18,24 @@ public class Order {
     private LocalDateTime updatedAt;
 
     public Order(UUID orderId, String phoneNumber, Address address, List<OrderItem> orderItems, OrderStatus orderStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        checkOrder(orderId, phoneNumber, address, orderItems);
         this.orderId = orderId;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.orderItems = orderItems;
-        this.orderStatus = orderStatus;
-        this.createdAt = createdAt;
+        this.orderStatus = orderStatus != null ? orderStatus : OrderStatus.ORDERED;
+        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now().withNano(0);
         this.updatedAt = updatedAt;
     }
 
-    @Builder
-    public Order(@NonNull UUID orderId, @NonNull String phoneNumber, @NonNull Address address, @NonNull List<OrderItem> orderItems, OrderStatus orderStatus) {
+    public Order(UUID orderId, String phoneNumber, Address address, List<OrderItem> orderItems) {
+        checkOrder(orderId, phoneNumber, address, orderItems);
         this.orderId = orderId;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.orderItems = orderItems;
+        this.orderStatus = OrderStatus.ORDERED;
         this.createdAt = LocalDateTime.now().withNano(0);
-        this.orderStatus = orderStatus != null ? orderStatus : OrderStatus.CART;
     }
 
     public UUID getOrderId() {
@@ -64,12 +66,19 @@ public class Order {
         return updatedAt;
     }
 
-    public void setOrderStatus(@NonNull OrderStatus orderStatus) {
+    public void setOrderStatus(OrderStatus orderStatus) {
+        GlobalUtils.checkNull(orderStatus);
         this.orderStatus = orderStatus;
         updateUpdatedAt();
     }
 
     public void updateUpdatedAt() {
         this.updatedAt = LocalDateTime.now().withNano(0);
+    }
+
+    private void checkOrder(UUID orderId, String phoneNumber, Address address, List<OrderItem> orderItems) {
+        if (orderId == null || phoneNumber == null || address == null || orderItems == null) {
+            throw new FieldBlankException("입력값이 부족합니다.", ErrorCode.FIELD_BLANK);
+        }
     }
 }
